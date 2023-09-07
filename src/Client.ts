@@ -43,6 +43,8 @@ export interface BeforeSendResult {
     options?: {[key: string]: any}
 }
 
+type Fetch = typeof fetch;
+
 /**
  * PocketBase JS Client.
  */
@@ -51,6 +53,8 @@ export default class Client {
      * The base PocketBase backend url address (eg. 'http://127.0.0.1.8090').
      */
     baseUrl: string;
+
+    fetch: Fetch;
 
     /**
      * Hook that get triggered right before sending the fetch request,
@@ -155,10 +159,12 @@ export default class Client {
         baseUrl = '/',
         authStore?: BaseAuthStore | null,
         lang = 'en-US',
+        customFetch: Fetch = fetch
     ) {
         this.baseUrl   = baseUrl;
         this.lang      = lang;
         this.authStore = authStore || new LocalAuthStore();
+        this.fetch = customFetch;
 
         // services
         this.admins      = new AdminService(this);
@@ -302,7 +308,7 @@ export default class Client {
             options.body = JSON.stringify(options.body);
         }
 
-        const fetchFunc = options.fetch || fetch;
+        const fetchFunc = options.fetch || this.fetch;
 
         // send the request
         return fetchFunc(url, options)

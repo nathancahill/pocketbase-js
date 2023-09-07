@@ -1,6 +1,6 @@
 {
     "version": "0.18.0",
-    "name": "pocketbase",
+    "name": "pocketbase-svelte",
     "description": "PocketBase JavaScript SDK",
     "author": "Gani Georgiev",
     "license": "MIT",
